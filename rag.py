@@ -4,6 +4,7 @@ warnings.filterwarnings('ignore')
 
 # import app and rag needed libraries
 import os
+import gc
 import streamlit as st
 import sys
 import sqlite3
@@ -43,32 +44,33 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-# Call the embeddings
-embeddings = SentenceTransformerEmbeddings(model_name="all-mpnet-base-v2")
-
-# Get the vector storage
-load_vector_store = Chroma(persist_directory="storage/microplastic_cosine", embedding_function=embeddings)
-
-# Load the retriever
-retriever = load_vector_store.as_retriever(search_kwargs={"k": 2})
-
-# Load the LLM
-repo_id = "mistralai/Mistral-7B-Instruct-v0.3"
-
-llm = HuggingFaceEndpoint(
-    repo_id=repo_id,
-    task="text-generation",
-    max_new_tokens=512,
-    do_sample=False,
-    repetition_penalty=1.03
-)
-
-qa_chain = create_stuff_documents_chain(llm, prompt)
-rag_chain = create_retrieval_chain(retriever, qa_chain)
-
 def answer(question):
+    # Call the embeddings
+    embeddings = SentenceTransformerEmbeddings(model_name="all-mpnet-base-v2")
+
+    # Get the vector storage
+    load_vector_store = Chroma(persist_directory="storage/microplastic_cosine", embedding_function=embeddings)
+
+    # Load the retriever
+    retriever = load_vector_store.as_retriever(search_kwargs={"k": 2})
+
+    # Load the LLM
+    repo_id = "mistralai/Mistral-7B-Instruct-v0.3"
+
+    llm = HuggingFaceEndpoint(
+        repo_id=repo_id,
+        task="text-generation",
+        max_new_tokens=512,
+        do_sample=False,
+        repetition_penalty=1.03
+    )
+
+    qa_chain = create_stuff_documents_chain(llm, prompt)
+    rag_chain = create_retrieval_chain(retriever, qa_chain)
+    
     response = rag_chain.invoke({'input': question})
     full_ans = response['answer']
+    gc.collect()
     return full_ans
 
 # Main function for the whole process with streamlit
