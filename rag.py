@@ -1,3 +1,7 @@
+# Warning control
+import warnings
+warnings.filterwarnings('ignore')
+
 # import app and rag needed libraries
 import os
 import streamlit as st
@@ -5,19 +9,15 @@ import sys
 import sqlite3
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEndpoint
-from langchain.chains import RetrievalQA
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
-from langchain.vectorstores import Chroma
 from langchain.embeddings import SentenceTransformerEmbeddings
-
-# Warning control
-import warnings
-warnings.filterwarnings('ignore')
 
 __import__("pysqlite3")                                     
 sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+
+from langchain.vectorstores import Chroma
 
 # Simple UI for streamlit
 st.set_page_config(page_title="Microplastic QA", page_icon="🔍", layout="wide")
