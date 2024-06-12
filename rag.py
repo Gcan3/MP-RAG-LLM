@@ -1,6 +1,7 @@
 # import app and rag needed libraries
 import os
 import streamlit as st
+import sys
 import sqlite3
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEndpoint
