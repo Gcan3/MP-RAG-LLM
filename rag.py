@@ -17,7 +17,7 @@ st.title("Microplastic QA")
 
 # load API key from .env file
 load_dotenv()
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = os.getenv('HUGGINGFACEHUB_API_TOKEN')
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets['HUGGINGFACEHUB_API_TOKEN']
 
 # Template for the queries
 system_prompt = """
