@@ -11,6 +11,9 @@ from langchain.chains import create_retrieval_chain
 from langchain.vectorstores import Chroma
 from langchain.embeddings import SentenceTransformerEmbeddings
 
+__import__("pysqlite3")                                     
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+
 # Simple UI for streamlit
 st.set_page_config(page_title="Microplastic QA", page_icon="🔍", layout="wide")
 st.title("Microplastic QA")
