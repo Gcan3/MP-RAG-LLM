@@ -12,6 +12,10 @@ from langchain.chains import create_retrieval_chain
 from langchain.vectorstores import Chroma
 from langchain.embeddings import SentenceTransformerEmbeddings
 
+# Warning control
+import warnings
+warnings.filterwarnings('ignore')
+
 __import__("pysqlite3")                                     
 sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 
